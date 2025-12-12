@@ -1,0 +1,139 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #ffffff;
+    background: #000000;
+    margin: 0;
+    padding: 0;
+}
+
+.landing-container {
+    position: relative;
+    height: 100vh;
+    background: url('../images/landingBg.png') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.landing-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1); /* Dark overlay for text readability */
+    z-index: 0;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.welcome-text {
+    font-family: 'Coco Gothic', sans-serif; /* Use Coco Gothic font */
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: slideInFromTop 1.2s forwards ease-in-out;
+    margin-bottom: 2rem; /* Increase spacing to push it higher */
+    line-height: 1.8; /* Improved spacing */
+}
+
+.main-heading {
+    font-family: 'Catchy Mager', serif; /* Use Catchy Mager font */
+    font-size: 106px; /* Exact font size */
+    font-weight: bold;
+    margin: 0 0 0.3rem 0; /* Reduce spacing below */
+    opacity: 0;
+    animation: fadeIn 1.5s forwards ease-in-out;
+    line-height: 1.1; /* Adjusted spacing for closer resemblance */
+}
+
+.sub-heading {
+    font-family: 'Catchy Mager', serif; /* Use Catchy Mager font */
+    font-size: 42px; /* Exact font size */
+    margin-top: 0; /* Remove additional space above */
+    margin-bottom: 1.5rem; /* Add spacing below for alignment */
+    opacity: 0;
+    animation: fadeIn 1.8s forwards ease-in-out;
+    line-height: 1.2; /* Slightly reduced line height */
+}
+
+.description {
+    font-family: 'Canva Sans', sans-serif; /* Use Canva Sans font */
+    font-size: 20px; /* Slightly larger font size */
+    font-weight: 400; /* Normal weight (unbold) */
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeIn 2s forwards ease-in-out;
+    line-height: 2; /* Adjusted spacing to resemble the design */
+    letter-spacing: 0.5px; /* Optional: Improve spacing between characters */
+}
+
+.cta-button {
+    font-family: 'Coco Gothic', sans-serif; /* Use Coco Gothic font */
+    font-size: 1rem;
+    padding: 0.8rem 2rem;
+    border: none;
+    background-color: #e67e22;
+    color: white;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+    animation: fadeIn 2.5s forwards ease-in-out;
+}
+
+.cta-button:hover {
+    background-color: #d35400;
+    transform: scale(1.05);
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@font-face {
+    font-family: 'Coco Gothic';
+    src: url('../fonts/coco-gothic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Catchy Mager';
+    src: url('../fonts/catchy-mager.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Canva Sans';
+    src: url('../fonts/canva-sans.ttf') format('truetype');
+}

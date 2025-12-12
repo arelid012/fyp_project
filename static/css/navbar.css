@@ -1,0 +1,218 @@
+/* Ensure the sidebar fills the full height */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Assign full width inputs*/
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px 40px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .fontpassword {
+            position: relative;
+        }
+
+        .fontpassword i{
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            color: gray;
+        }
+        @media screen and (max-width: 1024px) {
+            .desktop-only{
+               display: none;
+            }
+        }
+        .box {
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 .5em 1em -0.125em rgba(10,10,10,.1),0 0px 0 1px rgba(10,10,10,.02);
+            color: #4a4a4a;
+            display: block;
+            padding: 1.25rem;
+            border-width: 10px;
+        }
+        .custom-border{
+            background-color: #fff;
+            border-radius: 6px;
+            color: #4a4a4a;
+            display: inline-block;
+            border: 1px solid #dbdbdb;
+            box-shadow: 0 .5em 1em -0.125em rgba(10,10,10,.1),0 0px 0 1px rgba(10,10,10,.02);
+            width: 100%;
+        }
+        .custom-bg{
+            background: rgb(211,217,220);
+            background: linear-gradient(0deg, rgba(211,217,220,1) 0%, rgba(216,104,176,1) 100%);
+        }
+        .custom-bg2{
+            background: rgb(221,158,97);
+            background: linear-gradient(0deg, rgba(221,158,97,1) 0%, rgba(174,180,250,1) 100%);
+        }
+        .custom-bg3{
+            background: rgb(221,158,97);
+            background: linear-gradient(0deg, rgba(221,158,97,1) 0%, rgba(226,158,159,1) 100%);
+        }
+        .custom-bg4{
+            background: rgb(235,188,160);
+            background: linear-gradient(0deg, rgba(235,188,160,1) 0%, rgba(208,166,253,1) 100%);
+        }
+        .w-100{
+            width:100%;
+        }
+        .h-100{
+            height:100%;
+        }
+        table {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          table-layout: fixed;
+        }
+
+        table caption {
+          font-size: 1.5em;
+          margin: .5em 0 .75em;
+        }
+
+        table tr {
+          border-bottom: 1px solid #ddd;
+          padding: .35em;
+        }
+
+        table th,
+        table td {
+          padding: .625em;
+        }
+
+        table th {
+          font-size: .85em;
+          letter-spacing: .1em;
+        }
+
+        @media screen and (max-width: 768px) {
+        .width-mobile{
+            width:100%;
+        }
+          table {
+            border: 2;
+          }
+
+          table caption {
+            font-size: 1.3em;
+          }
+
+          table thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+          }
+
+          table tr {
+            border-bottom: 2px solid #abb1bf;
+            display: block;
+            margin-bottom: .625em;
+          }
+          table td {
+            border-bottom: 1px solid #abb1bf;
+            display: block;
+            font-size: .8em;
+            text-align: right;
+          }
+          table td::before {
+            /*
+            * aria-label has no advantage, it won't be read inside a table
+            content: attr(aria-label);
+            */
+            content: attr(data-label);
+            float: left;
+            font-weight: 500 !important;
+          }
+
+          table td:last-child {
+            border-bottom: 0;
+          }
+        }
+        @media screen and (max-width: 1024px) {
+          .d-none{
+            display: none;
+          }
+        }
+        @media screen and (min-width: 1024px) {
+          .is-mobile-visible{
+            display: none;
+          }
+        }
+        .custom-bg-green {
+        background: linear-gradient(45deg, #4CAF50, #2E8B57);
+        }
+
+        .custom-bg-yellow {
+           background: linear-gradient(45deg, #FFFF00, #FFD700);
+        }
+
+        .custom-bg-red {
+         background: linear-gradient(45deg, #FF6347, #B22222);
+        }
+
+        .custom-border {
+            height: 100%;  /* Adjust the height as needed to ensure adequate space */
+            padding: 20px; /* Optional padding to ensure the chart doesn't touch the borders */
+        }
+
+/* Sidebar specific styles */
+.menu-list a {
+    color: white;
+}
+
+.menu-list a:hover {
+    background-color: #2E8B57;
+}
+
+.menu-label {
+    color: #fff;
+    padding-left: 0.75rem;
+    padding-top: 1rem;
+}
+
+/* Navbar styles */
+.navbar {
+    background: linear-gradient(45deg, #4CAF50, #2E8B57);
+    color: white;
+}
+
+.navbar-item {
+    color: white !important;
+}
+
+.navbar-burger {
+    color: white !important;
+}
+
+.navbar-burger span {
+    background-color: white !important;
+}
+
+.navbar-menu {
+    background-color: #4CAF50;
+}
+
+.navbar-item:hover {
+    background-color: #2E8B57;
+}
+
+.navbar-end .navbar-item {
+    text-align: right;
+}

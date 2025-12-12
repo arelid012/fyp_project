@@ -1,0 +1,15 @@
+.column {
+    min-height: 100vh; /* Set the minimum height to fill the screen */
+    display: flex;
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    background-image: url('static/images/white.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#choropleth {
+    width: 100%;
+    height: 500px;
+}
+

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regression Analysis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/d21aa4c3aa.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(180deg, #004d61, #00897b);
+            color: white;
+            overflow-y: auto;
+            transition: transform 0.5s ease, box-shadow 0.5s;
+            z-index: 10;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .sidebar .menu-label img {
+            max-width: 100px;
+            margin: 20px auto;
+            display: block;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background-color: #a0e4d1;
+            color: #004d61;
+            transform: scale(1.05);
+        }
+        .sidebar ul li a span {
+            margin-left: 10px;
+        }
+        .sidebar ul li hr {
+            border: 0.5px solid #666;
+        }
+
+        .sidebar-logo {
+    max-width: 150px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+        /* Sidebar Toggle Button */
+        .toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 270px;
+            background-color: #004d61;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 11;
+            transition: left 0.5s ease, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .toggle-sidebar.hidden {
+            left: 20px;
+            transform: rotate(180deg);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            transition: margin-left 0.5s ease;
+        }
+        .main-content.collapsed {
+            margin-left: 50px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease;
+        }
+        .stats h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #004d61;
+        }
+        .stats p {
+            font-size: 1.2rem;
+            margin: 5px 0;
+        }
+
+        /* Plot Section */
+        .plot-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            animation: slideUp 1s ease;
+        }
+        .plot-container h2 {
+            font-size: 1.8rem;
+            color: #004d61;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="menu-label">
+            <img src="/static/logo.png" alt="Logo" class="sidebar-logo">
+        </div>
+        <ul class="menu-list">
+            <li>
+                <a href="/dashboard" class="navbar-item">
+                    <span class="fas fa-home"></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/heatmap" class="navbar-item">
+                    <span class="fas fa-map"></span>
+                    <span>Interactive Heatmap</span>
+                </a>
+            </li>
+            <li>
+                <a href="/regression" class="navbar-item">
+                    <span class="fas fa-chart-line"></span>
+                    <span>Regression Analysis</span>
+                </a>
+            </li>
+            <hr>
+            <li>
+                <a href="/" class="navbar-item">
+                    <span class="fas fa-sign-out-alt"></span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div id="toggleSidebar" class="toggle-sidebar">
+        <span class="fas fa-bars"></span>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+
+        <div class="plot-container">
+            <h2>Regression Plot</h2>
+            <div id="plot">{{ plot_html|safe }}</div>
+        </div>
+
+
+    <div class="stats">
+            <h2>Regression Analysis Summary</h2>
+        <b><p>Model Performance on :</p></b>
+
+        <p><b>K-Fold Cross-Validation (80:20 or 5-Fold CV)</b></p>
+        <p>Mean Absolute Error (MAE): {{ mae }}</p>
+        <p>Root Mean Squared Error (RMSE): {{ rmse }}</p>
+        <p>R-squared: {{ r2 }}</p>
+        <br>
+            <p>Average Mean Absolute Error (MAE): {{ A_mae }}</p>
+            <p>Average Root Mean Squared Error (RMSE): {{ A_rmse }}</p>
+            <p>Average R-squared: {{ A_r_squared }}</p>
+
+        <br>
+
+        <p><b>Metrics Based on All Trained Data (Full Training Set)</b></p>
+        <p>Mean Absolute Error (MAE): {{ mae_full }}</p>
+        <p>Root Mean Squared Error (RMSE): {{ rmse_full }}</p>
+        <p>R-squared: {{ r2_full }}</p>
+        </div>
+
+        </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        // Sidebar toggle event
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            toggleSidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('collapsed');
+        });
+
+        // Animate Plotly charts on load
+        document.addEventListener('DOMContentLoaded', () => {
+            Plotly.Plots.resize('plot');
+        });
+
+        // Responsive plot resizing
+        window.addEventListener('resize', () => {
+            Plotly.Plots.resize('plot');
+        });
+    </script>
+</body>
+</html>

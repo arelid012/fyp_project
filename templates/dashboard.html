@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <script src="https://kit.fontawesome.com/d21aa4c3aa.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: linear-gradient(180deg, #004d61, #00897b);
+            color: white;
+            overflow-y: auto;
+            transition: transform 0.5s ease, box-shadow 0.5s;
+            z-index: 10;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .sidebar .menu-label img {
+            max-width: 100px;
+            margin: 20px auto;
+            display: block;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background-color: #a0e4d1;
+            color: #004d61;
+            transform: scale(1.05);
+        }
+        .sidebar ul li a span {
+            margin-left: 10px;
+        }
+        .sidebar ul li hr {
+            border: 0.5px solid #666;
+        }
+
+        .sidebar-logo {
+    max-width: 150px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+        /* Sidebar Toggle Button */
+        .toggle-sidebar {
+            position: fixed;
+            top: 20px;
+            left: 270px;
+            background-color: #004d61;
+            color: white;
+            padding: 12px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 11;
+            transition: left 0.5s ease, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .toggle-sidebar.hidden {
+            left: 20px;
+            transform: rotate(180deg);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            transition: margin-left 0.4s ease;
+        }
+        .main-content.collapsed {
+            margin-left: 20px;
+        }
+        .statistics {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .stat-box {
+            flex: 1 1 calc(33% - 20px);
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        .stat-box .title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        .stat-box .subtitle {
+            font-size: 1.2rem;
+        }
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .chart-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            font-weight: bold;
+        }
+
+        /* Row 2 Equal Sizing */
+        .columns {
+            display: flex;
+            gap: 20px;
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .column .chart-container {
+            width: 100%;
+            height: 100%;
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #piechart, #choropleth {
+            width: 100%;
+            height: 8000px;
+        }
+
+        /* Dropdown Styling */
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #004d61;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #004d61;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        select:focus {
+            border-color: #8e44ad;
+            outline: none;
+            box-shadow: 0 0 5px rgba(142, 68, 173, 0.5);
+        }
+        select:hover {
+            background-color: #a0e4d1;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar">
+        <div class="menu-label">
+            <img src="/static/logo.png" alt="Logo" class="sidebar-logo">
+        </div>
+        <ul class="menu-list">
+            <li>
+                <a href="/dashboard" class="navbar-item">
+                    <span class="fas fa-home"></span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/heatmap" class="navbar-item">
+                    <span class="fas fa-map"></span>
+                    <span>Interactive Heatmap</span>
+                </a>
+            </li>
+            <li>
+                <a href="/regression" class="navbar-item">
+                    <span class="fas fa-chart-line"></span>
+                    <span>Regression Analysis</span>
+                </a>
+            </li>
+            <hr>
+            <li>
+                <a href="/" class="navbar-item">
+                    <span class="fas fa-sign-out-alt"></span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <div id="toggleSidebar" class="toggle-sidebar">
+        <span class="fas fa-bars"></span>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content">
+        <!-- Statistics Section -->
+        <div class="statistics">
+            <div class="stat-box">
+                <p class="title">Annual Growth Rate</p>
+                <p class="subtitle">{{ average_growth_rate }}</p>
+            </div>
+            <div class="stat-box">
+                <p class="title">Revenue Generated</p>
+                <p class="subtitle">{{ total_revenue_generated }}</p>
+            </div>
+            <div class="stat-box">
+                <p class="title">Avg Length of Stay</p>
+                <p class="subtitle">{{ average_length_of_stay }} Days</p>
+            </div>
+        </div>
+
+        <!-- Row 1: Full-Width Chart -->
+        <div class="chart-container">
+            <label for="metric">Select Metric:</label>
+            <select id="metric" onchange="fetchChart()">
+                <option value="Tourist Arrivals">Tourist Arrivals</option>
+                <option value="Average Length of Stay">Average Length of Stay</option>
+                <option value="Average Spend Per Day">Average Spend Per Day</option>
+            </select>
+            <div id="chart"></div>
+        </div>
+
+        <!-- Row 2: Two Equal-Sized Columns -->
+        <div class="columns">
+            <div class="column">
+                <div class="chart-container">
+                    <label for="pie-year-select">Select Year for Pie Chart:</label>
+                    <select id="pie-year-select" onchange="fetchPieChart()"></select>
+                    <div id="piechart"></div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="chart-container">
+                    <div id="choropleth"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Row 3: Full-Width Chart -->
+        <div class="chart-container">
+            <label for="bar-year-select">Select Year for Bar Chart:</label>
+            <select id="bar-year-select" onchange="fetchBarChart()"></select>
+            <div id="barchart"></div>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const mainContent = document.getElementById('mainContent');
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+            toggleSidebar.classList.toggle('hidden');
+            mainContent.classList.toggle('collapsed');
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            populateYearDropdown('pie-year-select');
+            populateYearDropdown('bar-year-select');
+            fetchChart();
+            fetchPieChart();
+            fetchChoropleth();
+            fetchBarChart();
+        });
+
+        function populateYearDropdown(dropdownId) {
+            const yearSelect = document.getElementById(dropdownId);
+            for (let year = 2000; year <= 2019; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
+
+        async function fetchChart() {
+            const metric = document.getElementById('metric').value;
+            const response = await fetch(`/chart?metric=${metric}`);
+            const data = await response.json();
+            Plotly.newPlot('chart', data.data, data.layout);
+        }
+
+        async function fetchPieChart() {
+            const year = document.getElementById('pie-year-select').value;
+            const response = await fetch(`/piechart?year=${year}`);
+            const data = await response.json();
+            Plotly.newPlot('piechart', data.data, data.layout);
+        }
+
+        async function fetchChoropleth() {
+            const response = await fetch('/choropleth');
+            const data = await response.json();
+            Plotly.newPlot('choropleth', data.data, data.layout);
+        }
+
+        async function fetchBarChart() {
+            const year = document.getElementById('bar-year-select').value;
+            const response = await fetch(`/barchart?year=${year}`);
+            const data = await response.json();
+            Plotly.newPlot('barchart', data.data, data.layout);
+        }
+
+        // Resize charts dynamically
+        window.addEventListener('resize', () => {
+            Plotly.Plots.resize('piechart');
+            Plotly.Plots.resize('choropleth');
+        });
+
+    </script>
+
+</body>
+</html>
