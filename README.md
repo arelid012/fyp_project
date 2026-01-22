@@ -23,7 +23,7 @@ An interactive web dashboard for analyzing tourism patterns in **Melaka, Malaysi
 - Future projections (2020–2025)
 
 ### 📊 Interactive Dashboard
-- Plotly-powered real-time charts
+- Plotly-powered charts
 - Choropleth map of international tourist origins
 - Time series trends (2000–2019)
 - Domestic vs foreign tourist comparison
