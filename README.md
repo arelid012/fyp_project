@@ -55,6 +55,7 @@ This project analyzes **Melaka tourism data (2000–2019)** to answer:
 
 ### Installation & Run
 
+```bash
 # Clone repository
 git clone https://github.com/yourusername/melaka-tourism-analytics.git
 cd melaka-tourism-analytics
