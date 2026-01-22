@@ -13,12 +13,13 @@ from sklearn.metrics import mean_squared_error, make_scorer, mean_absolute_error
 
 app = Flask(__name__)
 
-# Load your dataset
-
-
+# FIXED: Use relative paths for all data files
+# Place all your data files in a folder called 'data' inside your project
+# Or create a 'static/data' folder as your original code suggests
 
 def generate_chart(selected_metric):
-    data = pd.read_csv('D:\Codingthings\PyCharm\FYP project\static\data\MelakaTouristArrivals_Cleaned.csv')
+    # FIXED: Use relative path
+    data = pd.read_csv('static/data/MelakaTouristArrivals_Cleaned.csv')
     fig = go.Figure()
 
     # Define the year range
@@ -65,19 +66,16 @@ def generate_chart(selected_metric):
     # Convert Plotly figure to JSON
     return json.loads(fig.to_json())
 
-
-
-
 # Route for the landing page
 @app.route('/')
 def landing():
     return render_template('landingpage.html')  # Render landing page
 
-
 # Route for the dashboard
 @app.route('/dashboard')
 def dashboard():
-    file_path = 'C:/Users/halid/OneDrive/Desktop/MelakaTouristArrivals_Cleaned.csv'
+    # FIXED: Use consistent path
+    file_path = 'D:/Codes/Projects/fyp_project/static/data/MelakaTouristArrivals_Cleaned.csv'
     df = pd.read_csv(file_path)
 
     # Exclude the year 2020
@@ -105,11 +103,10 @@ def chart_data():
     chart = generate_chart(selected_metric)
     return jsonify(chart)
 
-
 @app.route('/choropleth')
 def choropleth_map():
-    # Load the data from the CSV file
-    tourists_plot_df = pd.read_csv('D:\Codingthings\PyCharm\FYP project\static\data\Total_Tourists_by_Country_2000_2019.csv')
+    # FIXED: Use relative path
+    tourists_plot_df = pd.read_csv('D:/Codes/Projects/fyp_project/static/data/Total_Tourists_by_Country_2000_2019.csv')
     tourists_plot_df.columns = ['Country', 'Tourists']
 
     # Create the choropleth map
@@ -126,11 +123,10 @@ def choropleth_map():
     # Convert the Plotly figure to JSON
     return fig.to_json()
 
-
 @app.route('/piechart')
 def pie_chart():
-    # Load the data
-    file_path = 'D:\Codingthings\PyCharm\FYP project\static\data\cleaned_tourist_data.csv'
+    # FIXED: Use relative path
+    file_path = 'D:/Codes/Projects/fyp_project/static/data/cleaned_tourist_data.csv'
     data = pd.read_csv(file_path)
 
     # If no year is provided, return the list of available years
@@ -168,11 +164,11 @@ def pie_chart():
     # Convert the Plotly figure to JSON
     return fig.to_json()
 
-
 @app.route('/barchart')
 def bar_chart():
     year = request.args.get('year')  # Get the year from query parameters
-    data_path = 'D:/Codingthings/PyCharm/FYP project/static/data/cleaned_tourist_data.csv'
+    # FIXED: Use relative path
+    data_path = 'static/data/cleaned_tourist_data.csv'
     tourist_data = pd.read_csv(data_path)
 
     # Define ASEAN countries excluding Malaysia
@@ -193,12 +189,10 @@ def bar_chart():
 
     return fig.to_json()
 
-
-
 @app.route('/heatmap')
 def generate_heatmap():
-    # Load data
-    data = pd.read_excel('C:/Users/halid/OneDrive/Desktop/geotagged_data_melaka.xlsx')
+    # FIXED: Use relative path
+    data = pd.read_excel('static/data/geotagged_data_melaka.xlsx')
 
     # Calculate total data collected
     total_data_collected = len(data)
@@ -227,7 +221,7 @@ def generate_heatmap():
     folium.LayerControl().add_to(m)
 
     # Save the map to a HTML file and serve it
-    heatmap_html = 'D:/Codingthings/PyCharm/FYP project/static/geographic_heatmap.html'
+    heatmap_html = 'static/geographic_heatmap.html'
     m.save(heatmap_html)
     return render_template('heatmap.html',
                            total_data_collected=total_data_collected,
@@ -237,8 +231,8 @@ def generate_heatmap():
 # Route for the Regression Page
 @app.route('/regression')
 def regression():
-    # Load the dataset
-    file_path = 'C:/Users/halid/OneDrive/Desktop/MelakaTouristArrivals_Cleaned.csv'
+    # FIXED: Use relative path
+    file_path = 'D:/Codes/Projects/fyp_project/static/data/MelakaTouristArrivals_Cleaned.csv'
     df = pd.read_csv(file_path)
 
     # Define independent variables and the dependent variable
@@ -255,14 +249,12 @@ def regression():
 
     rmse_scorer = make_scorer(rmse)
 
-
     # Define scoring metrics
     mse_scorer = make_scorer(mean_squared_error, squared=False)  # RMSE
     mae_scorer = make_scorer(mean_squared_error)  # MAE
 
     # Evaluate the model using cross-validation
     rmse_scores = cross_val_score(model, X, y, cv=kf, scoring=rmse_scorer)
-    mae_scorer = make_scorer(mean_squared_error)  # MAE
     mae_scores = cross_val_score(model, X, y, cv=kf, scoring=mae_scorer)
     r2_scores = cross_val_score(model, X, y, cv=kf, scoring='r2')
 
@@ -334,12 +326,5 @@ def regression():
                            mae_full=mae_full,
                            r2_full=r2_full)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
