@@ -83,5 +83,36 @@ Open your browser and visit:
 
 ```
 
+### **Project Pictures:**
+
+<div align="center">
+  <img src="static/images/project_pictures/dashboards.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Dashboard Page</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/project_pictures/dashboards2.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Cont. Dashboard Page</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/project_pictures/dashboards3.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Cont. Dashboard Page</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/project_pictures/heatmap.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Heatmap Page</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/project_pictures/heatmap2.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Cont. Heatmap Page</em></p>
+</div>
+
+<div align="center">
+  <img src="static/images/project_pictures/regression.png" width="600" alt="TaskFlow Database Schema">
+  <p><em>Regression Page</em></p>
+</div>
 
 
